@@ -12,23 +12,23 @@ from api import helpers
 import model
 import task
 
-from main import api_v1
+from main import api_v2
 
 parser = reqparse.RequestParser()
 parser.add_argument('json')
 
 
-@api_v1.resource('/post/', endpoint='api.create')
+@api_v2.resource('/post/', endpoint='api.data.create')
 class DrawingCreateAPI(flask_restful.Resource):
   def post(self):
     try:
-      drawing_json = json.loads(json.dumps(json.loads(flask.request.data), indent=2, sort_keys=True))
+      data = flask.request.data
       m = hashlib.md5()
-      m.update(str(drawing_json))
+      m.update(str(data))
       drawing_hash = m.hexdigest()
       drawing_db = model.Drawing.get_by('hash', drawing_hash)
       if not drawing_db:
-        drawing_db = model.Drawing(hash=drawing_hash, json=drawing_json)
+        drawing_db = model.Drawing(hash=drawing_hash, data=data)
       drawing_db.put()
       task.task_calculate_stats(drawing_db.created)
     except (ValueError, AssertionError):
@@ -36,16 +36,15 @@ class DrawingCreateAPI(flask_restful.Resource):
 
     response = flask.make_response(flask.jsonify({
       'id': drawing_db.key.id(),
-      'json': flask.url_for('api.id', drawing_id=drawing_db.key.id(), _external=True),
+      'data': flask.url_for('api.data.id', drawing_id=drawing_db.key.id(), _external=True),
     }))
     return response
 
 
-@api_v1.resource('/<int:drawing_id>.json', endpoint='api.id')
+@api_v2.resource('/<int:drawing_id>', endpoint='api.data.id')
 class DrawingHashAPI(flask_restful.Resource):
   def get(self, drawing_id):
     drawing_db = model.Drawing.get_by_id(drawing_id)
-    if not drawing_db or not drawing_db.json:
+    if not drawing_db:
       helpers.make_not_found_exception('Drawing %s not found' % drawing_id)
-    if drawing_db.json:
-      return flask.jsonify(drawing_db.json)
+    return drawing_db.data

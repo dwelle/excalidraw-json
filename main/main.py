@@ -63,7 +63,9 @@ import task
 
 from api import helpers
 api_v1 = helpers.Api(app, prefix='/api/v1')
+api_v2 = helpers.Api(app, prefix='/api/v2')
 import api.v1
+import api.v2
 
 if config.DEVELOPMENT:
   from werkzeug import debug
