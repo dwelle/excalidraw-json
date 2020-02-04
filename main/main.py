@@ -33,7 +33,7 @@ app.jinja_env.globals.update(
 )
 
 
-white = ['http://localhost:3000', 'https://excalidraw.com', 'excalidraw.netlify.com', 'vjeux.now.sh']
+white = ['http://localhost:', 'https://excalidraw.com', 'excalidraw.netlify.com', 'vjeux.now.sh']
 
 
 @app.after_request
