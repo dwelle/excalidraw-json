@@ -31,7 +31,6 @@ class Drawing(model.Base):
   FIELDS = {
     'hash': fields.String,
     'json': fields.Raw,
-    'data': fields.Raw,
     'size': fields.Integer,
     'elements': fields.Integer,
   }

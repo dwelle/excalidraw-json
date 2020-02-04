@@ -42,4 +42,7 @@ class DrawingHashAPI(flask_restful.Resource):
     drawing_db = model.Drawing.get_by_id(drawing_id)
     if not drawing_db:
       helpers.make_not_found_exception('Drawing %s not found' % drawing_id)
-    return drawing_db.data
+
+    response = flask.make_response(drawing_db.data)
+    response.headers.set('Content-Type', 'application/octet-stream')
+    return response
