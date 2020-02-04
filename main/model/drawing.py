@@ -12,7 +12,7 @@ import model
 class Drawing(model.Base):
   hash = ndb.StringProperty(required=True)
   json = ndb.JsonProperty(compressed=True, verbose_name=u'JSON')
-  data = ndb.BlobProperty()
+  data = ndb.BlobProperty(compressed=True)
 
   @ndb.ComputedProperty
   def size(self):
