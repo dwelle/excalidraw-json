@@ -6,16 +6,12 @@ import json
 import hashlib
 import flask
 import flask_restful
-from flask_restful import reqparse
 
 from api import helpers
 import model
 import task
 
 from main import api_v1
-
-parser = reqparse.RequestParser()
-parser.add_argument('json')
 
 
 @api_v1.resource('/post/', endpoint='api.create')
