@@ -11,38 +11,25 @@
       <thead>
         <tr class="text-nowrap">
           <th class="col-xs-1">id</th>
-          <th class="col-xs-2">{{utils.order_by_link('hash', 'Hash')}}</th>
           <th class="col-xs-1 text-right">{{utils.order_by_link('size', 'Size')}}</th>
-          <th class="col-xs-1 text-right">{{utils.order_by_link('elements', 'Elements')}}</th>
-          <th class="col-xs-5">JSON or Data</th>
-          <th class="col-xs-2">{{utils.order_by_link('modified', 'Modified')}}<br><small>{{utils.order_by_link('created', 'Created')}}</small></th>
+          <th class="col-xs-1">{{utils.order_by_link('modified', 'Modified')}}</th>
+          <th class="col-xs-1">{{utils.order_by_link('created', 'Created')}}</th>
         </tr>
       </thead>
       <tbody>
         # for drawing_db in drawing_dbs
-          <tr class="row-link" id="{{drawing_db.key.id()}}" data-href="https://excalidraw.com/?id={{drawing_db.key.id()}}">
+          <tr class="row-link" id="{{drawing_db.key.id()}}" data-href="{{url_for('api.data.id', drawing_id=drawing_db.key.id())}}">
             <td>{{drawing_db.key.id()}}</td>
-            <td>{{drawing_db.hash}}</td>
             <td class="text-right">
               {{drawing_db.size}}
-            </td>
-            <td class="text-right">
-              {{drawing_db.elements}}
-            </td>
-            <td class="not-link ellipsis">
-              # if drawing_db.json
-                <a href="{{url_for('api.drawing', drawing_key=drawing_db.key.urlsafe())}}">JSON</a>
-              # endif
-              # if drawing_db.data
-                <a href="{{url_for('api.data.id', drawing_id=drawing_db.key.id())}}">DATA</a>
-              # endif
-
             </td>
             <td>
               <time datetime="{{drawing_db.modified}}">
                 {{drawing_db.modified.strftime('%Y-%m-%d')}}
-              </time><br>
-              <time class="text-success small" datetime="{{drawing_db.created}}">
+              </time>
+            </td>
+            <td>
+              <time datetime="{{drawing_db.created}}">
                 {{drawing_db.created.strftime('%Y-%m-%d')}}
               </time>
             </td>
