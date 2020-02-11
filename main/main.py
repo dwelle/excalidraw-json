@@ -38,12 +38,12 @@ white = ['http://localhost:3000', 'https://excalidraw.com', 'excalidraw.netlify.
 
 @app.after_request
 def add_cors_headers(response):
-    referrer = flask.request.referrer
-    if not referrer:
+    origin = flask.request.origin
+    if not origin:
       return response
     for url in white:
-      if url in referrer:
-        parsed_uri = urlparse(referrer)
+      if url in origin:
+        parsed_uri = urlparse(origin)
         result = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
         response.headers.add('Access-Control-Allow-Origin', result[:-1])
         response.headers.add('Access-Control-Allow-Credentials', 'true')
